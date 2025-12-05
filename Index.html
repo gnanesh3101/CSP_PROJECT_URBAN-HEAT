@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Urban Heat Stress — Vijayawada (Soft Warm Theme)</title>
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+
+  <!-- Local CSS -->
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- ScrollReveal (for subtle reveal) -->
+  <script src="https://unpkg.com/scrollreveal"></script>
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-inner">
+      <h1>Urban Heat Stress — Vijayawada</h1>
+      <p class="lead">Study of Temperature, Air Quality, Greenery & Urban Heat Hotspots — CSP / B.Tech Project</p>
+    </div>
+    <div class="heat-orb heat-orb-1"></div>
+    <div class="heat-orb heat-orb-2"></div>
+  </header>
+
+  <main class="wrap">
+    <!-- MAP -->
+    <section class="card grid">
+      <div class="col map-col">
+        <h2>City Map — Areas & Hotspots</h2>
+        <p class="muted">Polygons show NDVI decline (past − now); markers are survey observations.</p>
+        <div id="map" class="map"></div>
+        <div class="map-stats">
+          <strong>Selected Area:</strong> <span id="selArea">—</span>
+          &nbsp; • &nbsp;
+          <strong>Temp:</strong> <span id="selTemp">—</span> °C
+          &nbsp; • &nbsp;
+          <strong>NDVI Δ:</strong> <span id="selNdvi">—</span>
+        </div>
+      </div>
+
+      <aside class="col control-col">
+        <h3>Legend & Controls</h3>
+        <div class="legend">
+          <div><span class="sw sw-low"></span> Low NDVI decline</div>
+          <div><span class="sw sw-mid"></span> Medium NDVI decline</div>
+          <div><span class="sw sw-high"></span> High NDVI decline (hotspot)</div>
+        </div>
+
+        <hr>
+
+        <h4>Map Mode</h4>
+        <label><input type="radio" name="mode" value="ndvi" checked> NDVI decline (choropleth)</label><br>
+        <label><input type="radio" name="mode" value="temp"> Temperature (choropleth)</label>
+
+        <hr>
+
+        <h4>Satellite (Before / After)</h4>
+        <div class="sat">
+          <img id="satBefore" src="https://via.placeholder.com/520x240?text=Satellite+Before" alt="Before">
+          <img id="satAfter" src="https://via.placeholder.com/520x240?text=Satellite+After" alt="After">
+        </div>
+        <p class="muted small">Replace images with actual satellite photos for final submission.</p>
+
+        <div class="control-actions">
+          <button id="downloadCsv" class="btn">Download CSV</button>
+          <button id="resetBtn" class="btn ghost">Reset Demo</button>
+        </div>
+      </aside>
+    </section>
+
+    <!-- FORM + TABLE -->
+    <section class="card">
+      <h2>Field Survey — Add Observation</h2>
+      <form id="quickForm" class="form">
+        <div class="row">
+          <input id="fArea" placeholder="Area / Street" required>
+          <input id="fLat" type="number" step="0.0001" placeholder="Latitude" required>
+          <input id="fLon" type="number" step="0.0001" placeholder="Longitude" required>
+        </div>
+
+        <div class="row">
+          <input id="fTemp" type="number" step="0.1" placeholder="Temperature (°C)" required>
+          <select id="fHighTemp" required>
+            <option value="">Higher Temp?</option>
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+          </select>
+          <input id="fAqi" type="number" placeholder="AQI" required>
+        </div>
+
+        <div class="row">
+          <input id="fGreen" type="number" step="1" placeholder="Greenery % (0-100)" required>
+          <input id="fNdviNow" type="number" step="0.01" placeholder="NDVI now (0-1)" required>
+          <input id="fNdviPast" type="number" step="0.01" placeholder="NDVI past (0-1)" required>
+        </div>
+
+        <input id="fNote" placeholder="Notes (optional)">
+        <div class="form-actions">
+          <button class="btn primary" type="submit">Add Observation</button>
+        </div>
+        <p id="formMsg" class="muted"></p>
+      </form>
+    </section>
+
+    <section class="card">
+      <h2>Survey Table</h2>
+      <p class="muted">Edit table values by re-adding via Quick Entry or modifying code (simple local storage demo)</p>
+      <div class="table-wrap">
+        <table id="surveyTable" class="survey-table">
+          <thead>
+            <tr>
+              <th>#</th><th>Area</th><th>Lat</th><th>Lon</th><th>Temp</th><th>HighTemp</th>
+              <th>AQI</th><th>Green%</th><th>NDVI Now</th><th>NDVI Past</th><th>Notes</th><th>Remove</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Charts -->
+    <section class="card charts-card">
+      <h2>Analytics Charts</h2>
+      <div class="charts-grid">
+        <canvas id="tempChart"></canvas>
+        <canvas id="aqiChart"></canvas>
+        <canvas id="greenChart"></canvas>
+      </div>
+    </section>
+
+    <footer class="card footer">
+      <div>Student: <strong>Podili Gnanesh</strong> • Roll: 22kn1a05d3 • Guide: Sunitha Madam</div>
+      <div class="muted small">Replace demo data & satellite images with actual field data before final evaluation.</div>
+    </footer>
+  </main>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+  <!-- App script -->
+  <script src="script.js"></script>
+
+  <script>
+    // subtle reveal
+    ScrollReveal().reveal('.card', { distance: '30px', duration: 700, interval: 100, easing: 'ease' });
+  </script>
+</body>
+</html>
